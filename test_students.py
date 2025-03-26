@@ -26,6 +26,7 @@ def session(test_db):
     session.close()
     transaction.rollback()
     connection.close()
+
 #Создание
 def test_add_student(session):
     new_student = Student(name='Власов Иван', age=20)
@@ -34,19 +35,33 @@ def test_add_student(session):
     student = session.query(Student).filter_by(name='Власов Иван').first()
     assert student is not None
     assert student.age == 20
-# Изменение
-def test_update_student(session):
-    student = session.query(Student).filter_by(name='Власов Иван').first()
-    student.age = 21
-    session.commit()
-    updated_student = session.query(Student).filter_by(name='Власов Сергей').first()
-    assert updated_student.age == 21
-# Удаление
-def test_delete_student(session):
-    student = session.query(Student).filter_by(name='Власов Сергей').first()
     session.delete(student)
     session.commit()
-    deleted_student = session.query(Student).filter_by(name='Власов Сергей').first()
+
+
+# Изменение
+def test_update_student(session):
+    student = Student(name='Власов Иван', age=20)
+    session.add(student)
+    session.commit()
+    student.age = 21
+    session.commit()
+    updated_student = session.query(Student).filter_by(name='Власов Иван').first()
+    assert updated_student.age == 21
+    session.delete(updated_student)
+    session.commit()
+
+# Удаление
+def test_delete_student(session):
+    student = Student(name='Власов Иван', age=20)
+    session.add(student)
+    session.commit()
+    student.age = 21
+    session.commit()
+    student = session.query(Student).filter_by(name='Власов Иван').first()
+    session.delete(student)
+    session.commit()
+    deleted_student = session.query(Student).filter_by(name='Власов Иван').first()
     assert deleted_student is None
 
 
