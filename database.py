@@ -13,7 +13,7 @@ class Student(Base):
 
 # Создание базы данных
 def get_bd():
-    return create_engine('"postgresql://postgres:123@localhost:5432/postgres"')
+    return create_engine("postgresql://postgres:123@localhost:5432/postgres")
 
 def get_session():
     bd = get_bd()
